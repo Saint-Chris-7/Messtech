@@ -1,0 +1,10 @@
+nav .container {
+  overflow: hidden;
+}
+
+nav .container .nav-brand .logo {
+  max-width: 100%;
+  width: auto;
+  float: left;
+}
+/*# sourceMappingURL=style.css.map */
