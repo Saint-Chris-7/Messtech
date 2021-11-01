@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block content %}
+
+<div class="sign-up">
+    <form action="." method="post" >
+        <div class="col-md-6">
+            <label for="firstname" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstname">
+          </div>
+          <div class="col-md-6">
+            <label for="Last Name" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="firstname">
+          </div>
+          <div class="col-md-6">
+            <label for="username" class="form-label">Username/label>
+            <input type="text" class="form-control" id="username">
+          </div>
+          <div class="col-md-6">
+            <label for="password1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password1">
+        </div>
+        <div class="col-md-6">
+            <label for="password2" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password2">
+          </div>
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Email</label>
+            <input type="email" class="form-control" id="inputEmail4">
+          </div>
+        <input type="submit" value="sign-up">
+    </form>
+
+</div>
+
+{% endblock %}
