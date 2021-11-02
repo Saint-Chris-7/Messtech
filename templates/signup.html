@@ -6,33 +6,39 @@
 {% block content %}
 
 <div class="sign-up">
-    <form action="." method="post" >
+    <form action="signup" method="post" >
+      {% csrf_token %}
         <div class="col-md-6">
             <label for="firstname" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="firstname">
+            <input type="text" class="form-control" name="Fname" id="firstname">
           </div>
           <div class="col-md-6">
             <label for="Last Name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="firstname">
+            <input type="text" class="form-control" name="Lname" id="firstname">
           </div>
           <div class="col-md-6">
-            <label for="username" class="form-label">Username/label>
-            <input type="text" class="form-control" id="username">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="Uname" id="username">
           </div>
           <div class="col-md-6">
             <label for="password1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password1">
+            <input type="password" class="form-control" name="password1" id="password1">
         </div>
         <div class="col-md-6">
-            <label for="password2" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password2">
+            <label for="password2" class="form-label">confirm Password</label>
+            <input type="password" class="form-control" name="password2" id="password2">
           </div>
         <div class="col-md-6">
             <label for="inputEmail4" class="form-label">Email</label>
-            <input type="email" class="form-control" id="inputEmail4">
+            <input type="email" class="form-control" name="email" id="inputEmail4">
           </div>
         <input type="submit" value="sign-up">
     </form>
+    <div class="messages">
+      {% for messages in messages %}
+      <h3>{{messages}}</h3>
+      {% endfor %}
+    </div>
 
 </div>
 
