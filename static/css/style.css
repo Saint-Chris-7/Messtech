@@ -184,28 +184,7 @@ ul{
 }
 /*---------media query for menu----------*/
 
-@media only screen and (max-width: 800px){
-  nav ul{
-      position: absolute;
-      top: 70px;
-      left: 0;
-      background: #333;
-      width: 100%;
-      overflow: hidden;
-      transition: max-height 0.5s;
-  }
-  nav ul li{
-      display: block;
-      margin-right: 50px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-  }
-  nav ul li a{
-      color: #fff;
-  }
-  .menu-icon{
-      display: block;}
-}
+/*--------------my csss------*/
 .header{
   min-height: 100vh;
   width: 100%;
@@ -235,9 +214,13 @@ nav img{
   position: relative;
 }
 .nav-links ul li a{
-  color: black;
+  color:white;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 15px;
+  @font-face {
+    font-family: 'Poppins';
+    src: url('../static/fonts/Poppins-Black.ttf');
+  }
 }
 .nav-links ul li::after{
   content: '';

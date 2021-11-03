@@ -5,10 +5,12 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from .models import *
 # Create your views here.
 def index(request):
-    return render(request,"index.html")
+    meals = Meal.objects.all()
+    context = {"meals":meals}
+    return render(request,"index.html",context)
 
 @login_required()
 def cart(request):
@@ -19,16 +21,20 @@ def cart(request):
     order = {"get_cart_item":0,"get_cart_total":0}
     context = {"items":items,"order":order}
     return render(request,"cart.html",context)
-    
 
+def delete_cart(request,id):
+    items = order.orderitem_set.get(pk=id)
+    items.delete()
+    return redirect("cart")
+
+    
+@login_required()
 def checkout(request):
-    if user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer,complete=False)
-        items = order.orderitem_set.all()
-    else:
-        items = []
-        order = {"get_cart_items":0,"get_cart_total":0}
+    customer = request.user.customer
+    order, created = Order.objects.get_or_create(customer=customer,complete=False)
+    items = order.orderitem_set.all()
+    items = []
+    order = {"get_cart_items":0,"get_cart_total":0}
     context = {"items":items,"order":order}
     return render(request,"checkout.html",context)
 
@@ -36,7 +42,6 @@ def login(request):
     if request.method == "POST":
         UserName = request.POST['Uname']
         password1 = request.POST['password1']
-
         user = authenticate(request,username=UserName,password=password1)
         if user is not None:
             login(request,user)
@@ -48,7 +53,7 @@ def login(request):
 
 def signup(request):
     if request.method == "POST":
-        FirstName = request.POST['Uname']
+        FirstName = request.POST['Fname']
         LastName = request.POST['Lname']
         UserName = request.POST['Uname']
         Email = request.POST['email']
@@ -65,10 +70,9 @@ def signup(request):
                 messages.success(request,"user created succesfully",fail_silently=True)
         else:
             messages.info(request,"incorrect password")
-            return redirect("signup")
+            return redirect("signup.html")
     else:
-        return render(request,"/")    
-    return render(request,"signup.html")
+        return render(request,"signup.html")
 
 
 def logout(request):
@@ -79,7 +83,11 @@ def dashboard(request):
     return render(request,"dashboard.html")
 
 def foods(request):
-    return render(request,"foods.html")
+    food= Meal.objects.filter(tags='foods')
+    context = {'foods':foods}
+    return render(request,"foods.html",context)
 
 def beaverages(request):
-    return render(request,"beaverages.html")
+    beaverages= Meal.objects.filter(tags='beaverages')
+    context = {'foods':beaverages}
+    return render(request,"beaverages.html",context)

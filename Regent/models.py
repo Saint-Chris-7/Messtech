@@ -2,11 +2,15 @@ from os import name
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-
+from PIL import Image
 
 # Create your models here.
 class Category(models.Model):
-    tags = models.CharField(max_length=12)
+    TAGS = (
+        ('foods','foods'),
+        ('beaverages','beaverages')
+    )
+    tags = models.CharField(choices=TAGS,max_length=12)
 
 class Meal(models.Model):
     image = models.ImageField(upload_to="meals-pics")
@@ -49,6 +53,15 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.customer}"
+
+    def save(self):
+        img = Image.open(self.profile_pic.path) # Open image 
+        # resize image
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size) # Resize image
+            img.save(self.image.path) # Save it again and override the larger image
+        return super().save()
 
 
 
