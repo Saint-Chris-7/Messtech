@@ -6,11 +6,11 @@ from PIL import Image
 
 # Create your models here.
 class Category(models.Model):
-    TAGS = (
-        ('foods','foods'),
-        ('beaverages','beaverages')
-    )
-    tags = models.CharField(choices=TAGS,max_length=12)
+    TAGS =(
+        ('foods', 'foods'),
+        ('beverages', 'beverages'),
+        )
+    tags = models.CharField(max_length=10, choices=TAGS,)
 
 class Meal(models.Model):
     image = models.ImageField(upload_to="meals-pics")
@@ -23,11 +23,12 @@ class Meal(models.Model):
 
 class Order(models.Model):
     TypeOrder = models.TextField("orderType","reserve takeaway")
-    customer = models.ForeignKey(User,on_delete=models.CASCADE)
-    ordercode = models.UUIDField(default=uuid.uuid4,editable=False,max_length=4)
+    customer = models.ForeignKey(User,on_delete=models.CASCADE)   
     ordertype = models.CharField(choices=TypeOrder.choices,max_length=15)
     orderstatus = models.BooleanField(default=False,null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
+    ordercode = models.UUIDField(default=uuid.uuid4,editable=False,max_length=4)
+    pick_up_time = models.DateTimeField()
 
     def __str__(self):
         return "{self.customer}-{self.ordercode}-{ordertype}-{orderstatus}"
@@ -48,7 +49,7 @@ class OrderItem(models.Model):
 
 class Profile(models.Model):
     customer = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
-    ordercode = models.OneToOneField(OrderItem,on_delete=models.CASCADE)
+    ordercode = models.ForeignKey(OrderItem,on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to="priles_pics",default="defualt.jpg")
 
     def __str__(self):

@@ -21,12 +21,11 @@
             <a href="{% url 'index' %}"><img src="{% static 'images/Messtech-logos_black.svg' %}" alt=""></a>
             <div class="nav-links">
                 <ul>
-                    <li><a href="{% static 'index' %}">Home</a></li>
-                   
-                    <li><a href="{% static 'foods' %}">Foods</a></li>
-                    <li><a href="{% static 'beaverages' %}">Beaverages</a></li>
-                    <li><a href="{% static 'login' %}">Login</a></li>
-                    <li><a href="{% static 'signup' %}">Signup</a></li>  
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'foods' %}">Foods</a></li>
+                    <li><a href="{% url 'beverages' %}">Beverages</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Signup</a></li>  
                    
                 </ul>
             </div>

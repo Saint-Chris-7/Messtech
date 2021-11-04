@@ -16,6 +16,11 @@
 </head>
 <body>
 <div class="sign-up">
+    <div class="messages">
+      {% for messages in messages %}
+      <h3>{{messages}}</h3>
+      {% endfor %}
+    </div>
     <form action="signup" method="post" >
       {% csrf_token %}
         <div class="col-md-6">
@@ -44,11 +49,7 @@
           </div>
         <input type="submit" value="sign-up">
     </form>
-    <div class="messages">
-      {% for messages in messages %}
-      <h3>{{messages}}</h3>
-      {% endfor %}
-    </div>
+   
   </div>
 
 </body>

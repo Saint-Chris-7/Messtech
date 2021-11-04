@@ -6,13 +6,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
+from .forms import CustomerInfo
 # Create your views here.
 def index(request):
-    meals = Meal.objects.all()
+    meals = Meal.objects.all()[:10]
     context = {"meals":meals}
     return render(request,"index.html",context)
 
-@login_required()
+#@login_required()
 def cart(request):
     customer = request.user.customer
     order, created = Order.objects.get_or_create(customer=customer,complete=False)
@@ -28,13 +29,14 @@ def delete_cart(request,id):
     return redirect("cart")
 
     
-@login_required()
+#@login_required()
 def checkout(request):
+    form = CustomerInfo() 
     customer = request.user.customer
     order, created = Order.objects.get_or_create(customer=customer,complete=False)
     items = order.orderitem_set.all()
     items = []
-    order = {"get_cart_items":0,"get_cart_total":0}
+    order = {"get_cart_items":0,"get_cart_total":0,'form':form}
     context = {"items":items,"order":order}
     return render(request,"checkout.html",context)
 
@@ -74,7 +76,6 @@ def signup(request):
     else:
         return render(request,"signup.html")
 
-
 def logout(request):
     logout(request)
     return render(request,"/")
@@ -87,7 +88,7 @@ def foods(request):
     context = {'foods':foods}
     return render(request,"foods.html",context)
 
-def beaverages(request):
-    beaverages= Meal.objects.filter(tags='beaverages')
-    context = {'foods':beaverages}
+def beverages(request):
+    beverages= Meal.objects.filter(tags='beverages')
+    context = {'foods':beverages}
     return render(request,"beaverages.html",context)

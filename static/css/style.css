@@ -214,7 +214,7 @@ nav img{
   position: relative;
 }
 .nav-links ul li a{
-  color:white;
+  color:goldenrod;
   text-decoration: none;
   font-size: 15px;
   @font-face {
@@ -236,6 +236,7 @@ nav img{
 .nav-links ul li:hover::after{
   width: 100%;
 }
+
 
 
 
