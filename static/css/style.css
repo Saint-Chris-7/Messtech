@@ -1,7 +1,6 @@
 
 
 
-
 *{
   margin: 0;
   padding: 0;
@@ -9,7 +8,7 @@
 }
 
 body{
-background-color: hsl(0, 0%, 98%);
+  background-color: whitesmoke;
 }
 
 
@@ -107,7 +106,7 @@ opacity: .6;
 
 
 .hidden{
-display: none!important;
+  display: inline-block;
 }
 
 /*--------brands--------*/
@@ -186,22 +185,26 @@ ul{
 
 /*--------------my csss------*/
 .header{
-  min-height: 100vh;
+  min-height: 100px;
   width: 100%;
-  background-image: url(/static/images/banner.jpg);
+  
   background-position: center;
   background-size: cover;
   position: relative;
+  max-height: fit-content;
 }
 nav{
   display: flex;
   padding: 2% 6%;
   justify-content: space-between;
   align-items: center;
+  background-color: whitesmoke;
 
 }
 nav img{
-  width: 150px;
+  width: 200px;
+  height: auto;
+
 }
 .nav-links{
   flex: 1;
@@ -235,6 +238,14 @@ nav img{
 }
 .nav-links ul li:hover::after{
   width: 100%;
+}
+
+.messages{
+  display: inline-block;
+  margin-left: 5px;
+  background-color: rgb(167, 40, 40);
+  font-weight: bold;
+
 }
 
 

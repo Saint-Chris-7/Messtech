@@ -13,43 +13,50 @@ def index(request):
     context = {"meals":meals}
     return render(request,"index.html",context)
 
-#@login_required()
 def cart(request):
-    customer = request.user.customer
-    order, created = Order.objects.get_or_create(customer=customer,complete=False)
-    items = order.orderitem_set.all()
-    items = []
-    order = {"get_cart_item":0,"get_cart_total":0}
+    if request.user.is_authenticated:
+        customer = request.user.profile
+        order, created = Order.objects.get_or_create(customer=customer,orderstatus=False)
+        items = order.orderitem_set.all()
+    else:
+        items = []
+        order = {"get_cart_item":0,"get_cart_total":0}
     context = {"items":items,"order":order}
     return render(request,"cart.html",context)
 
+
 def delete_cart(request,id):
-    items = order.orderitem_set.get(pk=id)
+    order= Order.objects.get(orderstatus=False)
+    items = order.orderitem_set.get(pk =id)
     items.delete()
     return redirect("cart")
 
+
     
-#@login_required()
-def checkout(request):
-    form = CustomerInfo() 
-    customer = request.user.customer
-    order, created = Order.objects.get_or_create(customer=customer,complete=False)
-    items = order.orderitem_set.all()
-    items = []
-    order = {"get_cart_items":0,"get_cart_total":0,'form':form}
+
+def checkout(request):     
+    
+    if request.user.is_authenticated:
+        form = CustomerInfo(request.POST) 
+        customer = request.user.profile
+        order, created = Order.objects.get_or_create(customer=customer,orderstatus=False)
+        items = order.orderitem_set.all()
+    else:
+        items = []
+        order = {"get_cart_item":0,"get_cart_total":0}
     context = {"items":items,"order":order}
     return render(request,"checkout.html",context)
 
-def login(request):
+def Login(request):
     if request.method == "POST":
         UserName = request.POST['Uname']
-        password1 = request.POST['password1']
+        password1 = request.POST['Password1']
         user = authenticate(request,username=UserName,password=password1)
         if user is not None:
             login(request,user)
             return redirect("/")
         else:
-            messages.info(request,"invalid user")
+            messages.info(request,"invalid user try again or sign-up")
             return redirect("login")  
     return render(request,"login.html")
 
@@ -72,7 +79,7 @@ def signup(request):
                 messages.success(request,"user created succesfully",fail_silently=True)
         else:
             messages.info(request,"incorrect password")
-            return redirect("signup.html")
+            return redirect("login")
     else:
         return render(request,"signup.html")
 
@@ -84,11 +91,11 @@ def dashboard(request):
     return render(request,"dashboard.html")
 
 def foods(request):
-    food= Meal.objects.filter(tags='foods')
+    foods= Meal.objects.filter(tags="foods")
     context = {'foods':foods}
     return render(request,"foods.html",context)
 
 def beverages(request):
     beverages= Meal.objects.filter(tags='beverages')
-    context = {'foods':beverages}
-    return render(request,"beaverages.html",context)
+    context = {'beverages':beverages}
+    return render(request,"beverages.html",context)

@@ -18,7 +18,7 @@
 <body>
     <section class="header">
         <nav>
-            <a href="{% url 'index' %}"><img src="{% static 'images/Messtech-logos_black.svg' %}" alt=""></a>
+            <img src="{% static 'images/Messtech-logos_black.png' %}" class="nav-bar" alt="...">
             <div class="nav-links">
                 <ul>
                     <li><a href="{% url 'index' %}">Home</a></li>
@@ -26,22 +26,20 @@
                     <li><a href="{% url 'beverages' %}">Beverages</a></li>
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'signup' %}">Signup</a></li>  
-                   
                 </ul>
             </div>
+            <div class="form-inline my-2 my-lg-0">
+                <a href="{% url 'cart' %}">
+                   <img  id="cart-icon" src="{% static 'images/carts.png' %}">
+               </a>
+               <p id="cart-total">0</p>
+           </div>
         </nav>
-
     </section>
     {% block content %}
 
     {% endblock %}
     <!--foooter-->
-    <section class="footer">
-        <div class="social-media">
-
-        </div>
-
-
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

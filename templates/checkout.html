@@ -20,9 +20,6 @@
                     <p>Customer Information:</p>
                     <hr>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="address" placeholder="Address..">
-                    </div>
-                    <div class="form-field">
                         <form action="." method="post">
                             {{form|crispy}}
                             <input type="button" value="submit">
@@ -30,7 +27,7 @@
                     </div>
                     {% for item in items %}
                     <div class="form-field">
-                        <h3>Your ticket number: {{item.order.ordercode}}</h3>
+                        <h3>Your ticket number: UUID</h3>
                     </div>
                     {% endfor %}
                 </div>
@@ -41,7 +38,7 @@
             <br>
 		</div>
         <br>
-        <div class="box-element hidden" id="payment-info">
+        <div class="box-element" id="payment-info">
             <h3>Send Money to : +254 705 262208</h3>
         </div>		
 	</div>

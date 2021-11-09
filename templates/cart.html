@@ -30,11 +30,11 @@
             </div>
             {% for item in items %}
             <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-                <div style="flex:2"><p>{{item.product.name}}</p></div>
-                <div style="flex:1"><p>Ksh {{item.product.price|floatformat:2}}</p></div>
+                <div style="flex:2"><img class="row-image" src="{{item.products.image.url}}"></div>
+                <div style="flex:2"><p>{{item.products.name}}</p></div>
+                <div style="flex:1"><p>Ksh {{item.products.price|floatformat:2}}</p></div>
                 <div style="flex:1">
-                    <p class="quantity">{{item.qty}}</p>
+                    <p class="quantity">{{item.quantity}}</p>
                     <div class="quantity">
                         <img class="chg-quantity" src="{% static  'images/arrow-up.png' %}">
                 
@@ -43,13 +43,7 @@
                 </div>
                 <div style="flex:1"><p>Ksh {{item.get_total}}</p></div>
                 <div style="flex:1">
-                    {% csrf_token %}
-                    <form action="{% url 'delete' {{id}} %}" method="post" class="d-inline">
-                    <button type="submit" class="btn">
-                        <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
-                    </button>
-                </form></div>
-
+                </div>
             </div>
             {% endfor %}
         </div>
