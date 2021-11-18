@@ -19,7 +19,7 @@ class Meal(models.Model):
         return f"{self.name}"
 
 class Profile(models.Model):
-    customer = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
+    customer = models.OneToOneField(User,on_delete=models.SET_NULL,null=True)
     profile_pic = models.ImageField(upload_to="profile_pics",default="profile_pics/default.jpg")
 
     def __str__(self):
