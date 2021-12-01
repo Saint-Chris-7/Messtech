@@ -1,45 +1,48 @@
 {% extends "base.html" %}
 {% load static %}
-{% load crispy_forms_tags %}
 {% block content %}
 <div class="row">
 	<div class="col-lg-6">
 		<div class="box-element" id="form-wrapper">
-            <form id="form">
-                <div id="user-info">
-                    <div class="form-field">
-                        <input required class="form-control" type="text" name="name" placeholder="Name..">
-                    </div>
-                    <div class="form-field">
-                        <input required class="form-control" type="email" name="email" placeholder="Email..">
-                    </div>
-                </div>
-                
+            <form id="form" action="." method="post">
+                {% csrf_token %}
                 <div id="shipping-info">
-                    <hr>
-                    <p>Customer Information:</p>
+                    <p>Shipping Information:</p>
                     <hr>
                     <div class="form-field">
-                        <form action="." method="post">
-                            {{form|crispy}}
-                            <input type="button" value="submit">
-                        </form>    
+                        <input required class="form-control" type="text" name="Fname" placeholder="first name..">
                     </div>
-                    {% for item in items %}
                     <div class="form-field">
-                        <h3>Your ticket number: UUID</h3>
+                        <input required class="form-control" type="text" name="Lname" placeholder="last name..">
                     </div>
-                    {% endfor %}
+                    <div class="form-field">
+                        <input required class="form-control" type="email" name="Email" placeholder="Email..">
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control" type="text" name="Residence" placeholder="Town/city..">
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control" type="number" name="Phone" placeholder="Phone number..">
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control" type="text" name="Pickup" placeholder="Pickuppoint..">
+                    </div>
+
+                    <input class="btn btn-success btn-block" type="submit" value="submit">
                 </div>
                 <hr>
-                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                
             </form>
+            <button class="btn btn-dark-green btn-black btn-outline-dark"><a style="color: green; text-decoration: none;" href="{% url 'transaction' %}">M-pesa</a></button>
+            <a href="{% url 'transaction' %}">M-pesa</a>
             <br>
             <br>
 		</div>
         <br>
-        <div class="box-element" id="payment-info">
-            <h3>Send Money to : +254 705 262208</h3>
+        <div class="box-element hidden" id="payment-info">
+            <small>Paypal Options</small>
+            <hr>
+            <small>M-pesa Options</small>
         </div>		
 	</div>
 
@@ -51,10 +54,10 @@
             <hr>
             {% for item in items %}
             <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-                <div style="flex:2"><p>{{item.product.name}}</p></div>
-                <div style="flex:1"><p>Ksh.{{item.product.price|floatformat:2}}</p></div>
-                <div style="flex:1"><p>{{item.qty}}</p></div>
+                <div style="flex:2"><img class="row-image" src="{{item.products.image.url}}"></div>
+                <div style="flex:2"><p>{{item.products.name}}</p></div>
+                <div style="flex:1"><p>Ksh.{{item.products.price|floatformat:2}}</p></div>
+                <div style="flex:1"><p>{{item.quantity}}</p></div>
             </div>
             {% endfor %}
             <h5>Items: {{order.get_cart_items}}</h5>

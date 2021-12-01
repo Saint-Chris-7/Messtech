@@ -1,9 +1,12 @@
 from django import forms
 
-from .models import OrderItem
+from django.db import models
+from django.db.models import fields
 
-class CustomerInfo(forms.ModelForm):
+from .models import CustomerDetails
+
+class CustomerForm(forms.ModelForm):
     class Meta:
-        model = OrderItem
-        fields = ['ordertype','pick_up_time']
+        model = CustomerDetails
+        fields = "__all__"
 

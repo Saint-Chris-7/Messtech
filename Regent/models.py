@@ -2,7 +2,9 @@ from os import name
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-from PIL import Image
+
+from django.db.models.fields import NullBooleanField
+#from PIL import Image
 
 # Create your models here.
 class Meal(models.Model):
@@ -20,7 +22,7 @@ class Meal(models.Model):
 
 class Profile(models.Model):
     customer = models.OneToOneField(User,on_delete=models.SET_NULL,null=True)
-    profile_pic = models.ImageField(upload_to="profile_pics",default="profile_pics/default.jpg")
+
 
     def __str__(self):
         return f"{self.customer}"
@@ -30,6 +32,18 @@ class Order(models.Model):
     orderstatus = models.BooleanField(default=False)
     date_ordered = models.DateTimeField(auto_now_add=True)
     ordercode = models.UUIDField(max_length=4,auto_created=True,default=uuid.uuid4,editable=False)
+    
+    @property
+    def get_cart_total(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderitems])
+        return total
+
+    @property
+    def get_cart_items(self):
+        orderitems= self.orderitem_set.all()
+        total= sum([item.quantity for item in orderitems])
+        return total
     
 
     def __str__(self):
@@ -42,9 +56,9 @@ class OrderItem(models.Model):
     ordertype = models.CharField(max_length=20,choices=TypeOrder)
     products = models.ForeignKey(Meal,on_delete=models.SET_NULL,null=True)#all foods and drinks
     order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
-    quantity = models.PositiveSmallIntegerField(default=True,null=True,blank=True)
-    pick_up_time = models.DateTimeField()
+    quantity = models.IntegerField(default=1,null=True,blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    orderitemID = models.PositiveSmallIntegerField(auto_created=True,null=True)
 
     def __str__(self):
         return f"{self.products}"
@@ -53,6 +67,28 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.products.price * self.quantity
         return total
+
+class CustomerDetails(models.Model):
+    TypeOrder = (('reserve', 'reserve'),
+    ('takeaway', 'takeaway'),
+    )
+    
+    name = models.CharField(max_length=15)
+    email = models.EmailField()
+    phone = models.PositiveIntegerField()
+    ordertype = models.CharField(max_length=20,choices=TypeOrder)
+    table = models.IntegerField(null=True)
+    time = models.TimeField()
+
+  
+        
+            
+        
+        
+
+
+
+
 
 """
     def save(self):

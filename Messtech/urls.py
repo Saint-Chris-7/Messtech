@@ -22,5 +22,7 @@ from Messtech.settings import MEDIA_ROOT,MEDIA_URL
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Regent.urls')),
+    
+
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

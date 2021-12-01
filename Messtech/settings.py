@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Regent.apps.RegentConfig',
     'crispy_forms',
+    'django_daraja',
+      
 ]
 
 MIDDLEWARE = [
@@ -139,3 +141,19 @@ LOGIN_REDIRECT_URL = 'index'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR,"static/")]
 CRISPY_FORM_PACK="bootstrap5"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'youruseremail@gmail.com'
+EMAIL_HOST_PASSWORD = 'key'#password to the email.
+EMAIL_PORT = 587
+EMAIL_USER_TLS = True
+DEFAULT_FROM_EMAIL = 'default from email'
+
+
+#mpesa
+MPESA_ENVIRONMENT="sandbox"
+MPESA_CONSUMER_KEY="poDG98FasmwCLYYj5evDzuPDYOj6gb9O"#mpesa_consumer_key
+MPESA_CONSUMER_SECRET=" iVCvcPKhvNN1IMS6"#mpesa_consumer_secret
+MPESA_SHORTCODE_TYPE= 174379 #paybill
+
