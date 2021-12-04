@@ -19,6 +19,14 @@ class Meal(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    @property
+    def imageURL(self):
+        try:
+           url = self.image.url
+        except:
+            url="" 
+        return url
+    
 
 class Profile(models.Model):
     customer = models.OneToOneField(User,on_delete=models.SET_NULL,null=True)
@@ -28,10 +36,10 @@ class Profile(models.Model):
         return f"{self.customer}"
 
 class Order(models.Model):
-    customer = models.ForeignKey(Profile,on_delete=models.CASCADE)   
+    customer = models.ForeignKey(Profile,on_delete=models.SET_NULL,null=True)   
     orderstatus = models.BooleanField(default=False)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    ordercode = models.UUIDField(max_length=4,auto_created=True,default=uuid.uuid4,editable=False)
+    ordercode = models.CharField(max_length=4,null=True)
     
     @property
     def get_cart_total(self):
@@ -47,7 +55,11 @@ class Order(models.Model):
     
 
     def __str__(self):
-        return f"{self.customer}-{self.ordercode}"
+        return f"{self.id}"
+    def save(self, *args,**kwargs):
+        if self.ordercode == "":
+            self.ordercode= str(uuid.uuid4()).replace("-","").upper()[:4]
+        return super().save(*args,**kwargs)
 
 class OrderItem(models.Model):
     TypeOrder = (('reserve', 'reserve'),
@@ -55,7 +67,7 @@ class OrderItem(models.Model):
     )
     ordertype = models.CharField(max_length=20,choices=TypeOrder)
     products = models.ForeignKey(Meal,on_delete=models.SET_NULL,null=True)#all foods and drinks
-    order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=1,null=True,blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     orderitemID = models.PositiveSmallIntegerField(auto_created=True,null=True)
@@ -73,8 +85,8 @@ class CustomerDetails(models.Model):
     ('takeaway', 'takeaway'),
     )
     
-    name = models.CharField(max_length=15)
-    email = models.EmailField()
+    name = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
     phone = models.PositiveIntegerField()
     ordertype = models.CharField(max_length=20,choices=TypeOrder)
     table = models.IntegerField(null=True)

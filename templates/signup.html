@@ -1,56 +1,45 @@
 <!DOCTYPE html>
 {% load static %}
-{% load crispy_forms_tags %}
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="1616" href="{% static 'images/favicon-16x16.png' %}">
-  <link rel="icon" type="image/favicon" sizes="48x48" href="{% static 'images/favicon.ico' %}">
-  <title>Messtech | sign-up</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.ico' %}">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+    <title>LaCasaDelLiquor | sign-up </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
 </head>
 <body>
-<div class="sign-up">
-    <div class="messages">
-      {% for messages in messages %}
-      <h3>{{messages}}</h3>
-      {% endfor %}
+    <div class="loginbox">
+        <img src="{% static 'images/user-icon.png' %}" class="logo" alt="avatar icon">
+         
+        {% for messages in messages %}
+        <h1 class="alert alert-info">{{messages}}</h1>
+       {% endfor %}
+        <form action="." method="post">
+            {% csrf_token %}
+            <p>First Name</p>
+            <input type="text" name="Fname" placeholder="first name">
+            <p>Last Name</p>
+            <input type="text" name="Lname" placeholder="last name">
+            <p>User Name</p>
+            <input type="text" name="Uname" placeholder="Enter username">
+            <p>Email</p>
+            <input type="email" name="Email" placeholder="exampl@gmail.com">
+            <p>Password</p>
+            <input type="password" name="Password1" placeholder="Enter password">
+            <p>Confirm Password</p>
+            <input type="password" name="Password2" placeholder="Confirm password">
+            <input type="submit" name="" value="sign-up"> 
+            <a href="{% url 'login' %}"> Already have an account ?</a>
+            <p  class="fa-copyright">&copy; 2021</p>
+        </form>
     </div>
-    <form action="" method="post" >
-      {% csrf_token %}
-        <div class="col-md-6">
-            <label for="firstname" class="form-label">First Name</label>
-            <input type="text" class="form-control" name="Fname" id="firstname">
-          </div>
-          <div class="col-md-6">
-            <label for="Last Name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" name="Lname" id="firstname">
-          </div>
-          <div class="col-md-6">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" name="Uname" id="username">
-          </div>
-          <div class="col-md-6">
-            <label for="password1" class="form-label">Password</label>
-            <input type="password" class="form-control" name="password1" id="password1">
-        </div>
-        <div class="col-md-6">
-            <label for="password2" class="form-label">confirm Password</label>
-            <input type="password" class="form-control" name="password2" id="password2">
-          </div>
-        <div class="col-md-6">
-            <label for="inputEmail4" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" id="inputEmail4">
-          </div>
-          <button type="submit" class="btn btn-primary">Sign-up</button>
-    </form>
-   
-  </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

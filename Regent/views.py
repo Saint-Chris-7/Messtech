@@ -1,4 +1,5 @@
 
+from typing import Text
 from django import http
 from django.contrib import auth
 from django.shortcuts import render,redirect
@@ -7,13 +8,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
-from Regent.forms import CustomerForm
+
 from django_daraja.mpesa.core import MpesaClient
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.core.files import File
 import json
 from django.urls import reverse
+import datetime
 # Create your views here.
+
+@login_required(login_url="index")
 def index(request):
     meals = Meal.objects.all()[:10]
     if request.user.is_authenticated:
@@ -35,36 +39,21 @@ def cart(request):
         items = order.orderitem_set.all()
         cartItem = order.get_cart_items
     else:
-        items = []
-        
+        items = [] 
         order = {"get_cart_items":0,"get_cart_total":0}
         cartItem = order['get_cart_items']
     context = {"items":items,"order":order,"cartItem":cartItem}
     return render(request,"cart.html",context)
-
-
-
-
-
-    
 
 def checkout(request):       
     if request.user.is_authenticated:
         customer = request.user.profile
         order, created = Order.objects.get_or_create(customer=customer,orderstatus=False)
         items = order.orderitem_set.all()
-        form = CustomerForm()
-        if request.method == "POST":
-            form = CustomerForm(request.POST)
-            if form.is_valid():
-                messages.success(request,"completed")
-                form.save()
-                return redirect('transaction')#you can give an emplty form
-    else:
-        form = CustomerForm()
+    else: 
         items = []
         order = {"get_cart_item":0,"get_cart_total":0}
-    context = {"items":items,"order":order,"form":form}
+    context = {"items":items,"order":order}
     return render(request,"checkout.html",context)
 
 
@@ -90,6 +79,54 @@ def updateItem(request):
     if orderItem.quantity <= 0:
         orderItem.delete()
     return JsonResponse('Item was added',safe=False)
+
+def processOrder(request):
+    transaction_id = datetime.datetime.now().timestamp()
+    global data
+    data = json.loads(request.body)
+    
+    print(data)
+
+    if request.user.is_authenticated:
+        customer = request.user.profile
+        order, created = Order.objects.get_or_create(customer=customer,orderstatus=False)
+        total = float(data['form']['total'])
+
+        if total == order.get_cart_total:
+            order.orderstatus = True
+        order.save()
+
+        details = CustomerDetails.objects.create(
+            name=customer,
+            order=order,
+            phone= data['form']['phone'],
+            ordertype = data['shipping']['ordertype'],
+            table= data['shipping']['table'],
+            time= data['shipping']['time']
+        )
+    else:
+        print("user not there")
+
+    return JsonResponse('payment is complete',safe=False)
+
+#the mpesa function 
+def transaction(request):
+    cl = MpesaClient()
+# Use a Safaricom phone number that you have access to, for you to beable to view the prompt.
+    phone_number = '0757164343'
+    amount = float(data['form']['total'])#total
+    account_reference = 'Messtech'
+    transaction_desc = 'Pay for your order'
+    callback_url = request.build_absolute_uri(reverse('mpesa_stk_push_callback'))
+    response = cl.stk_push(phone_number, amount, account_reference,transaction_desc, callback_url)
+    return HttpResponse(response.text)
+
+def stk_push_callback(request):
+    Mpesa_messages = request.body#mpesa message
+    with open("transactions",mode="a",encoding="utf-8") as f:
+        f = File(f)
+        f.write(data)
+    return FileResponse(as_attachment=True,filename="f")
 
 
 
@@ -134,29 +171,15 @@ def logout(request):
     logout(request)
     return render(request,"/")
 
-
-
-#the mpesa function 
-def transaction(request):
-    cl = MpesaClient()
-# Use a Safaricom phone number that you have access to, for you to beable to view the prompt.
-    phone_number = '0757164343'
-    amount = 1
-    account_reference = 'reference'
-    transaction_desc = 'Description'
-    callback_url = request.build_absolute_uri(reverse('mpesa_stk_push_callback'))
-    response = cl.stk_push(phone_number, amount, account_reference,transaction_desc, callback_url)
-    return HttpResponse(response.text)
-
-def stk_push_callback(request):
-    data = request.body
-    with open("transactions",mode="a",encoding="utf-8") as f:
-        f = File(f)
-        f.write(data)
-    return FileResponse(as_attachment=True,filename="f")
     
 
-
 def dashboard(request):
+    customers_total = Profile.objects.count()
+    complete = CustomerDetails.objects.filter()#get complere
+    complete_total = CustomerDetails.objects.filter().count()#total complete
+    table_order = CustomerDetails.objects.filter().count()#get all table orders
+    table_order_total = CustomerDetails.objects.filter().count()#get all total table orders
+    incomplete = Order.objects.filter(orderstatus=False)
+    incomplete_total = Order.objects.filter(orderstatus=False).count()
     return render(request,"dashboard.html")
 

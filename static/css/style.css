@@ -1,6 +1,4 @@
 
-
-
 *{
   margin: 0;
   padding: 0;
@@ -8,7 +6,7 @@
 }
 
 body{
-  background-color: whitesmoke;
+  background-color: white;
 }
 
 
@@ -106,8 +104,11 @@ opacity: .6;
 
 
 .hidden{
-  display: inline-block;
+  
+  display: none;
+  
 }
+
 
 /*--------brands--------*/
 .brands{

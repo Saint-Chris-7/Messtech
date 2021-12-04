@@ -7,9 +7,10 @@ urlpatterns  = [
     path('login/', views.Login, name='login'),
     path('cart/', views.cart, name='cart'),
     path('update_item/', views.updateItem, name='update_item'),
-    path('dashbaord', views.dashboard, name='dashboard'),
+    path('process_order/', views.processOrder, name='process_order'),
+    path('dashboard', views.dashboard, name='dashboard'),
     path('checkout/', views.checkout, name='checkout'),
     path('transaction/', views.transaction, name='transaction'),
-    path('daraja/stk-push', views.stk_push_callback, name='mpesa_stk_push_callback'),
+    path('daraja/stk-push/', views.stk_push_callback, name='mpesa_stk_push_callback'),
 
 ]
