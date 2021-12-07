@@ -67,7 +67,7 @@ class OrderItem(models.Model):
     )
     ordertype = models.CharField(max_length=20,choices=TypeOrder)
     products = models.ForeignKey(Meal,on_delete=models.SET_NULL,null=True)#all foods and drinks
-    order = models.ForeignKey(Order,on_delete=models.CASCADE,blank=True,null=True)
+    order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
     quantity = models.IntegerField(default=1,null=True,blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     orderitemID = models.PositiveSmallIntegerField(auto_created=True,null=True)
@@ -85,12 +85,16 @@ class CustomerDetails(models.Model):
     ('takeaway', 'takeaway'),
     )
     
-    name = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    name = models.ForeignKey(Profile,on_delete=models.SET_NULL,null=True)
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
     phone = models.PositiveIntegerField()
     ordertype = models.CharField(max_length=20,choices=TypeOrder)
     table = models.IntegerField(null=True)
     time = models.TimeField()
+
+    def __str__(self):
+        return f"Name={self.name}       OrderNo:- {self.order}"
+    
 
   
         

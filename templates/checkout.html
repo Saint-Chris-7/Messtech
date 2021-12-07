@@ -10,19 +10,25 @@
                     <p>kindly fill this form:</p>
                     <hr>
                     <div class="form-field">
+                        <label for="time ">Time</label>
                         <input required  class="form-control" name="time" type="time" placeholder="Time..">
                     </div>
                     <div class="form-field">
+                        <label for="tableno">Table No:-</label>
                         <input required  class="form-control" name="tableno" type="number" placeholder="Table number..">
                     </div>
                     <div  aria-required="true" class="form-field">
+                        <label for="ordertype">Select Order</label>
                         <select required name="odertype"  autofocus id="ordertype">
                             <option value="Reservation">Reservation</option>
                             <option value="Takeaway">Takeaway</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <input required class="form-control" type="number" name="Phone" placeholder="Phone number..">
+                        <label for="phone">Phone</label>
+                        <input required class="form-control" type="number" name="phone" placeholder="Phone number..">
+                        <i>The phone number issued will be used to get mpesa promt SMS</i>
+                        
                     </div>   
                 </div>
                 <hr>
@@ -34,7 +40,9 @@
 		</div>
         <br>
         <div class="box-element hidden" id="payment-info">
-            <button id="make-payment" class="btn btn-blue-grey btn-outline-dark-green">make payment</button>
+            <button id="make-payment" class="btn btn-blue-grey btn-outline-dark-green">
+                <a href="{% url 'transaction' %}" style="text-decoration: none; color: green; font-weight: 600;">mpesa</a>
+                </button>
             <hr>
         </div>		
 	</div>
@@ -63,28 +71,53 @@
     var user = '{{request.user}}'
     var total = '{{order.get_cart_total}}'
 
-    var form = document.getElementById('form-wrapper')
+    var form = document.getElementById('form')
 
     form.addEventListener('submit',function(e){
         e.preventDefault()
         console.log('submited')
         document.getElementById('form-button').classList.add("hidden")
         document.getElementById('payment-info').classList.remove("hidden")
-
-        var url = "/process_order/"
-        fetch(url,{
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrftoken,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({'user-info':user-info})
     })
 
-    })
     document.getElementById('make-payment').addEventListener('click',function(e){
         submitFormData()
+        console.log("form submitted")
     })
+    function submitFormData(){
+        console.log(' payment button clicked')
+
+        var userFormData = {
+            'time':null,
+            'tableno':null,
+            'phone':null,
+            'ordertype':null,
+            'total':total,
+        }
+        if(user != 'AnonymousUser'){
+            userFormData.time = form.time.value
+            userFormData.tableno = form.tableno.value
+            userFormData.phone = form.phone.value
+            userFormData.ordertype = form.ordertype.value
+            
+        }
+
+        var url ='/process_order/'
+        fetch(url,{
+            method:'POST',
+            headers:{
+                'content-Type':'application/json',
+                'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({'form':userFormData})
+        })
+        .then((response)=>response.json())
+        .then((data) => {
+            console.log('sucess',data);
+            alert('Transaction completed');
+            window.location.href = "{% url 'index' %}"
+        })
+    }
    
 
 </script>
