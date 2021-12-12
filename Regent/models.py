@@ -39,7 +39,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Profile,on_delete=models.SET_NULL,null=True)   
     orderstatus = models.BooleanField(default=False)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    ordercode = models.CharField(max_length=4,null=True)
+    ordercode = models.IntegerField(null=True)
     
     @property
     def get_cart_total(self):
@@ -57,8 +57,8 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.id}"
     def save(self, *args,**kwargs):
-        if self.ordercode == "":
-            self.ordercode= str(uuid.uuid4()).replace("-","").upper()[:4]
+        #if self.ordercode == "":
+        self.ordercode= self.id
         return super().save(*args,**kwargs)
 
 class OrderItem(models.Model):
@@ -68,7 +68,7 @@ class OrderItem(models.Model):
     ordertype = models.CharField(max_length=20,choices=TypeOrder)
     products = models.ForeignKey(Meal,on_delete=models.SET_NULL,null=True)#all foods and drinks
     order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
-    quantity = models.IntegerField(default=1,null=True,blank=True)
+    quantity = models.IntegerField(default=0,null=True,blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     orderitemID = models.PositiveSmallIntegerField(auto_created=True,null=True)
 

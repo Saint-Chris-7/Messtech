@@ -20,6 +20,7 @@
                     <div  aria-required="true" class="form-field">
                         <label for="ordertype">Select Order</label>
                         <select required name="odertype"  autofocus id="ordertype">
+                            <option disabled="disabled" value="Reservation">Select Type</option>
                             <option value="Reservation">Reservation</option>
                             <option value="Takeaway">Takeaway</option>
                         </select>
@@ -41,7 +42,7 @@
         <br>
         <div class="box-element hidden" id="payment-info">
             <button id="make-payment" class="btn btn-blue-grey btn-outline-dark-green">
-                <a href="{% url 'transaction' %}" style="text-decoration: none; color: green; font-weight: 600;">mpesa</a>
+                <a href="#" class="mpesa" style="text-decoration: none; color: green; font-weight: 600;">mpesa</a>
                 </button>
             <hr>
         </div>		
@@ -114,7 +115,7 @@
         .then((response)=>response.json())
         .then((data) => {
             console.log('sucess',data);
-            alert('Transaction completed');
+            alert('Transaction completed we are working on your order');
             window.location.href = "{% url 'index' %}"
         })
     }

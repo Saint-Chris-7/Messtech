@@ -8,13 +8,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
+import base64
 
 from django_daraja.mpesa.core import MpesaClient
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.core.files import File
 import json
 from django.urls import reverse
-import datetime
+
 # Create your views here.
 
 @login_required(login_url="index")
@@ -102,18 +103,19 @@ def processOrder(request):
                 table=int(data['form']['tableno']),
                 time=data['form']['time'],
             )
-
     else:
         print("The user is logged in")
-
-
     return JsonResponse('payment is complete',safe=False)
+
+
+
+
 
 #the mpesa function 
 def transaction(request):
     cl = MpesaClient()
 # Use a Safaricom phone number that you have access to, for you to beable to view the prompt.
-    phone_number = '0757164343' #data['form']['phone']#customer phone number
+    phone_number = '254757164343' #data['form']['phone']#customer phone number
     amount = 1#int(data['form']['total'])#total
     account_reference = 'Messtech'
     transaction_desc = 'Pay for your order'
@@ -122,13 +124,12 @@ def transaction(request):
     return HttpResponse(response.text)
 
 
-
 def stk_push_callback(request):
     Mpesa_messages = request.body#mpesa message
     with open("transactions",mode="a",encoding="utf-8") as f:
         f = File(f)
         f.write(Mpesa_messages)
-    return FileResponse(as_attachment=True,filename="f")
+   
 
 
 
@@ -174,5 +175,9 @@ def logout(request):
     return render(request,"/")
 
 def dashboard(request):
+    
+    completed_order = Order.objects.filter(orderstatus=True)
+    total_completed_order=Order.objects.filter(orderstatus=True).count()
+    
     return render(request,"dashboard.html")
 

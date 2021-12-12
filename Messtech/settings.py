@@ -150,6 +150,10 @@ EMAIL_PORT = 587
 EMAIL_USER_TLS = True
 DEFAULT_FROM_EMAIL = 'default from email'
 
+ADMINS=[('chris','chrisgathuthi@gmail.com')]
+
+LOGIN_URL='login/'
+LOGIN_REDIRECT_URL='index/'
 
 #mpesa
 MPESA_ENVIRONMENT="sandbox"
@@ -160,6 +164,13 @@ MPESA_EXPRESS_SHORTCODE='174379'
 MPESA_PASSKEY='bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
 MPESA_INITIATOR_USERNAME="messtech"
 MPESA_INITIATOR_SECURITY_CREDENTIAL='Safaricom998!'
+
+#sms authentications
+SMS_BACKEND = 'sms.backends.twilio.SmsBackend'
+TWILIO_ACCOUNT_SID = 'live_redacted-twilio-account-sid'
+TWILIO_AUTH_TOKEN = 'live_redacted-twilio-auth-token'
+
+
 
 
 
