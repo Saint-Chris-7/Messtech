@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -11,7 +12,7 @@
   <section class="staff">
     <div class="staff-info">
       <div class="staff-name">
-        <h2>name</h2>
+        <h3>Welcome {{user}}</h3>
         <a href="#">log-out</a>
       </div>
     </div>
@@ -20,13 +21,13 @@
   <section class="stats">
     <div class="basic-stats">
       <div class="total-profiles">
-        <p>Aggregate customers :0</p>
+        <p>total customers {{total_customer}}</p>
       </div>
       <div class="active-profiles">
-        <p>active profiles :</p>
+        <p>active profiles:{{total_customer}}</p>
       </div>
       <div class="today-orders">
-        <p>today-totals</p>
+        <p>today-totals: {{completed_orders}}</p>
       </div>
     </div>
   </section>
@@ -39,23 +40,36 @@
           <tr>
             <th scope="col">id</th>
             <th scope="col">Name</th>
-            <th scope="col">Orer id</th>
+            <th scope="col">Order_id</th>
+            <th scope="col">Phone</th>
             <th scope="col">table</th>
             <th scope="col">time</th>
             <th scope="col">status</th>
           </tr>
         </thead>
         <tbody>
+          {% for today_order in takeaway_order %}
           <tr>
-            <td>2</td>
-            <td>chris</td>
-            <td>36</td>
-            <td>20</td>
-            <td>00.00.00</td>
+            <td>today_order.id</td>
+            <td>today_order.name</td>
+            <td>today_order.order</td>
+            <td>today_order.phone</td>
+            <td>today_order.table</td>
+            <td>today_order.time</td>
             <td><input type="checkbox" name="status" id="status"></td>
           </tr>
+          {% endfor %} 
         </tbody>
       </table>
+    </div>
+    <div class="mpesa-messages">
+      <h3>This is mpesa stk push notifications</h3>
+      <p>Lorem ipsum dolor sit amet,
+      consectetur adipisicing elit. 
+      Recusandae quis quae nemo! Expedita
+      facere eos ea reprehenderit, rerum at molestias,
+      consequuntur nesciunt repellat velit esse dignissimos vel sit. 
+      Repellat, molestiae!</p>
     </div>
 
     <div class="reservation-table">
@@ -64,25 +78,31 @@
           <tr>
             <th scope="col">id</th>
             <th scope="col">Name</th>
-            <th scope="col">Orer id</th>
+            <th scope="col">Order_id</th>
+            <th scope="col">phone</th>
             <th scope="col">table</th>
             <th scope="col">time</th>
             <th scope="col">status</th>
           </tr>
         </thead>
         <tbody>
+          {% for today_order in reserve_orders %}
           <tr>
-            <td>2</td>
-            <td>chris</td>
-            <td>36</td>
-            <td>20</td>
-            <td>00.00.00</td>
+            <td>today_order.id</td>
+            <td>today_order.name</td>
+            <td>today_order.order</td>
+            <td>today_order.phone</td>
+            <td>today_order.table</td>
+            <td>today_order.time</td>
             <td><input type="checkbox" name="status" id="status"></td>
           </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
   </section>
+
+  
 
   
   

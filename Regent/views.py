@@ -6,6 +6,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from .models import *
 import base64
@@ -18,7 +19,7 @@ from django.urls import reverse
 
 # Create your views here.
 
-@login_required(login_url="index")
+@login_required(login_url="/index/")
 def index(request):
     meals = Meal.objects.all()[:10]
     if request.user.is_authenticated:
@@ -90,6 +91,8 @@ def processOrder(request):
     if request.user.is_authenticated:
         customer = request.user.profile
         order, created = Order.objects.get_or_create(customer=customer,orderstatus=False)
+        global order_id
+        order_id= order.ordercode
         total= float(data['form']['total'])
         if total == order.get_cart_total:
             order.orderstatus=True
@@ -114,11 +117,10 @@ def processOrder(request):
 #the mpesa function 
 def transaction(request):
     cl = MpesaClient()
-# Use a Safaricom phone number that you have access to, for you to beable to view the prompt.
-    phone_number = '254757164343' #data['form']['phone']#customer phone number
-    amount = 1#int(data['form']['total'])#total
+    phone_number = str(data['form']['phone']) #data['form']['phone']#customer phone number # Use a Safaricom phone number that you have access to, for you to beable to view the prompt.
+    amount = int(data['form']['total'])#total
     account_reference = 'Messtech'
-    transaction_desc = 'Pay for your order'
+    transaction_desc = 'your order {order_id }'
     callback_url = request.build_absolute_uri(reverse('mpesa_stk_push_callback'))
     response = cl.stk_push(phone_number, amount, account_reference,transaction_desc, callback_url)
     return HttpResponse(response.text)
@@ -151,9 +153,9 @@ def signup(request):
         FirstName = request.POST['Fname']
         LastName = request.POST['Lname']
         UserName = request.POST['Uname']
-        Email = request.POST['email']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
+        Email = request.POST['Email']
+        password1 = request.POST['Password1']
+        password2 = request.POST['Password2']
         if password1 == password2:
             if User.objects.filter(username=UserName).exists():
                 messages.info(request,"username already exist, try another username")
@@ -162,7 +164,7 @@ def signup(request):
             else:
                 user=User.objects.create(username=UserName,email=Email,password=password1,first_name=FirstName,last_name=LastName)
                 user.save()
-                messages.success(request,"user created succesfully",fail_silently=True)
+                messages.success(request,"{user}'s account created succesfully proceed to login",fail_silently=True)
                 return redirect("login")
         else:
             messages.info(request,"incorrect password")
@@ -173,11 +175,20 @@ def signup(request):
 def logout(request):
     logout(request)
     return render(request,"/")
-
+@staff_member_required
 def dashboard(request):
-    
-    completed_order = Order.objects.filter(orderstatus=True)
-    total_completed_order=Order.objects.filter(orderstatus=True).count()
-    
-    return render(request,"dashboard.html")
+    if request.user.is_authenticated:
+        total_customer = Profile.objects.all().count()
+        completed_orders = Order.objects.filter(orderstatus=True).count()
+        total_completed_order=Order.objects.filter(orderstatus=True).count()
+        reserve_orders = CustomerDetails.objects.filter(ordertype="Reservation")
+        takeway_orders = CustomerDetails.objects.filter(ordertype = "Takeaway")
+        context={
+            "completed_orders":completed_orders,
+            "total_completed_order":total_completed_order,
+            "total_customer":total_customer,
+            "reserve_orders":reserve_orders,
+            "takeaway_orders":takeway_orders
+        }
+    return render(request,"dashboard.html",context)
 

@@ -81,14 +81,10 @@ class OrderItem(models.Model):
         return total
 
 class CustomerDetails(models.Model):
-    TypeOrder = (('reserve', 'reserve'),
-    ('takeaway', 'takeaway'),
-    )
-    
     name = models.ForeignKey(Profile,on_delete=models.SET_NULL,null=True)
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
     phone = models.PositiveIntegerField()
-    ordertype = models.CharField(max_length=20,choices=TypeOrder)
+    ordertype = models.CharField(max_length=20)
     table = models.IntegerField(null=True)
     time = models.TimeField()
 

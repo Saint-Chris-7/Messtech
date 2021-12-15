@@ -11,16 +11,17 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.ico' %}">
     <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
-    <title>LaCasaDelLiquor | sign-up </title>
+    <title>Messtech | sign-up </title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
 </head>
 <body>
     <div class="loginbox">
         <img src="{% static 'images/user-icon.png' %}" class="logo" alt="avatar icon">
-         
-        {% for messages in messages %}
-        <h1 class="alert alert-info">{{messages}}</h1>
-       {% endfor %}
+        
+            {% for messages in messages %}
+            <p>{{messages}}</p>
+           {% endfor %}
+           
         <form action="." method="post">
             {% csrf_token %}
             <p>First Name</p>

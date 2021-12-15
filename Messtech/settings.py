@@ -136,8 +136,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/media/')
 MEDIA_URL = 'media/'
 
-LOGIN_URL = "/login/"
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_URL = "login/"
+LOGIN_REDIRECT_URL = '/index'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR,"static/")]
 CRISPY_FORM_PACK="bootstrap5"

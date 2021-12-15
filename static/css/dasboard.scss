@@ -102,6 +102,7 @@ body{
 }
 .orders{
     display: flex;
+    justify-content: space-between;
     margin: 30px 40px 5px 40px;
     padding: 10px 4px 10px 4px;
     .takeaway-table{
@@ -115,10 +116,28 @@ body{
                 text-transform: uppercase;
                 font-size: medium;
                 line-height: 2px;
-                th{
-                    padding: 2px;
+                padding: 3px;
+                tbody{
+                    margin: 15px;
+                    padding: 20px;
                 }
             }
+        }
+    }
+    .mpesa-messages{
+        background-color: #ffffff10;
+        backdrop-filter: blur(12px);
+       -webkit-backdrop-filter: blur(12px);
+       margin-left: 30px;
+        margin-right: 30px;
+        h3{
+            align-items: center;
+            text-align: center;
+        }
+
+        p{
+            padding: 25px;
+
         }
     }
     .reservation-table{
@@ -127,6 +146,8 @@ body{
        -webkit-backdrop-filter: blur(12px);
         table{
             padding: 2px;
+            border: 2px;
+            border-color: black;
             thead{
                 font-weight: 800;
                 text-transform: uppercase;
