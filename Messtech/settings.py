@@ -142,17 +142,12 @@ LOGIN_REDIRECT_URL = '/index'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,"static/")]
 CRISPY_FORM_PACK="bootstrap5"
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'youruseremail@gmail.com'
-EMAIL_HOST_PASSWORD = 'key'#password to the email.
-EMAIL_PORT = 587
-EMAIL_USER_TLS = True
+
 DEFAULT_FROM_EMAIL = 'default from email'
 
 ADMINS=[('chris','chrisgathuthi@gmail.com')]
 
-LOGIN_URL='login/'
+LOGIN_URL='/login/'
 LOGIN_REDIRECT_URL='index/'
 
 #mpesa
