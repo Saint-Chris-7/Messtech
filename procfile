@@ -1,1 +1,1 @@
-web: gunicorn Messtech.wsgi --log-file -
+web: gunicorn Messtech.Messtech.wsgi --log-file -
