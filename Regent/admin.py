@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 from Regent.models import Meal,OrderItem,Profile,Order,CustomerDetails
 
 # Register your models here.

@@ -73,7 +73,7 @@ class OrderItem(models.Model):
     orderitemID = models.PositiveSmallIntegerField(auto_created=True,null=True)
 
     def __str__(self):
-        return f"{self.products}"
+        return f"{self.order}"
     
     @property
     def get_total(self):

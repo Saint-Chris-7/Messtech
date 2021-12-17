@@ -2,24 +2,25 @@
 from typing import Text
 from django import http
 from django.contrib import auth
+from django.db.models.fields import DateField
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User,auth
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from .models import *
 import base64
-
 from django_daraja.mpesa.core import MpesaClient
-from django.http import HttpResponse, JsonResponse, FileResponse
+from django.http import HttpResponse, JsonResponse, FileResponse, response
 from django.core.files import File
 import json
 from django.urls import reverse
 
+
 # Create your views here.
 
-@login_required(login_url="/index/")
+@login_required(login_url="/login/")
 def index(request):
     meals = Meal.objects.all()[:10]
     if request.user.is_authenticated:
@@ -33,7 +34,7 @@ def index(request):
         cartItem = order['get_cart_items']
     context = {"items":items,"order":order,"cartItem":cartItem,"meals":meals}
     return render(request,"index.html",context)
-
+@login_required
 def cart(request):
     if request.user.is_authenticated:
         customer = request.user.profile
@@ -47,6 +48,7 @@ def cart(request):
     context = {"items":items,"order":order,"cartItem":cartItem}
     return render(request,"cart.html",context)
 
+@login_required
 def checkout(request):       
     if request.user.is_authenticated:
         customer = request.user.profile
@@ -65,10 +67,6 @@ def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
-
-    print('action',action)
-    print('productId',productId)
-
     customer = request.user.profile
     product = Meal.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer,orderstatus=False)
@@ -87,7 +85,6 @@ def updateItem(request):
 def processOrder(request):
     global data
     data = json.loads(request.body)
-    print("data",data)
     if request.user.is_authenticated:
         customer = request.user.profile
         order, created = Order.objects.get_or_create(customer=customer,orderstatus=False)
@@ -107,8 +104,22 @@ def processOrder(request):
                 time=data['form']['time'],
             )
     else:
-        print("The user is logged in")
+        print("The user is not logged in")
     return JsonResponse('payment is complete',safe=False)
+
+def order_receipt(request):
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition']= 'attachment; filename=Receipt.txt'
+    if request.user.is_authenticated:
+        customer = request.user.profile
+        cust_details = CustomerDetails.objects.all().filter(name=customer)[::-1]
+        lines=[]
+        for details in cust_details:
+            lines.append(f"Name: {details.name}\n Order no: {details.order}\n phone no:{details.phone}\n Order Type:{details.ordertype}\n Table no:{details.table}\n Time:{details.time}\n\n *****End*****\n")
+        response.writelines(lines)
+        return response
+        
+
 
 
 
@@ -125,7 +136,7 @@ def transaction(request):
     response = cl.stk_push(phone_number, amount, account_reference,transaction_desc, callback_url)
     return HttpResponse(response.text)
 
-
+@login_required
 def stk_push_callback(request):
     Mpesa_messages = request.body#mpesa message
     with open("transactions",mode="a",encoding="utf-8") as f:
@@ -139,14 +150,18 @@ def Login(request):
     if request.method == "POST":
         UserName = request.POST['Uname']
         password1 = request.POST['Password1']
-        user = authenticate(request,username=UserName,password=password1)
+        print(password1)
+        user = auth.authenticate(request,username=UserName,password=password1)
         if user is not None:
-            login(request,user)
+            auth.login(request,user)
+            print(user)
             return redirect("/")
         else:
-            messages.info(request,"invalid user try again or sign-up")
-            return redirect("login")  
-    return render(request,"login.html")
+            messages.info(request,"invalid credentials")
+            return redirect("login")
+    else:
+        
+        return render(request,"login.html")
 
 def signup(request):
     if request.method == "POST":
@@ -162,33 +177,34 @@ def signup(request):
             elif User.objects.filter(email=Email):
                 messages.info(request,"email already in use")
             else:
-                user=User.objects.create(username=UserName,email=Email,password=password1,first_name=FirstName,last_name=LastName)
+                user=User.objects.create(username=UserName,email=Email,password=password1,first_name=FirstName,last_name=LastName,is_active=True,is_superuser=False,is_staff=False)
+                messages.success(request,"account created succesfully proceed to login",fail_silently=True)
                 user.save()
-                messages.success(request,"{user}'s account created succesfully proceed to login",fail_silently=True)
-                return redirect("login")
+                
+            return redirect("login")
+                
         else:
             messages.info(request,"incorrect password")
          
     else:
         return render(request,"signup.html")
 
-def logout(request):
-    logout(request)
-    return render(request,"/")
+def logout_view(request):
+    auth.logout(request)
+    return render(request,"logout.html")
+
 @staff_member_required
 def dashboard(request):
     if request.user.is_authenticated:
         total_customer = Profile.objects.all().count()
+        order_items = OrderItem.objects.all()[::-1]
         completed_orders = Order.objects.filter(orderstatus=True).count()
-        total_completed_order=Order.objects.filter(orderstatus=True).count()
-        reserve_orders = CustomerDetails.objects.filter(ordertype="Reservation")
-        takeway_orders = CustomerDetails.objects.filter(ordertype = "Takeaway")
+        all_customer_details = CustomerDetails.objects.all()[::-1]
         context={
             "completed_orders":completed_orders,
-            "total_completed_order":total_completed_order,
+            "order_items":order_items,
             "total_customer":total_customer,
-            "reserve_orders":reserve_orders,
-            "takeaway_orders":takeway_orders
+            "all_customer_details":all_customer_details
         }
     return render(request,"dashboard.html",context)
 

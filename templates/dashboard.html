@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="{% static 'css/dasboard.css' %}">
   <title>Dashboard</title>
 </head>
@@ -14,6 +15,7 @@
       <div class="staff-name">
         <h3>Welcome {{user}}</h3>
         <a href="#">log-out</a>
+        <a href="#">Admin-panel</a>
       </div>
     </div>
   </section>
@@ -35,7 +37,7 @@
 
   <section class="orders">
     <div class="takeaway-table">
-      <table>
+      <table class="styled-table">
         <thead>
           <tr>
             <th scope="col">id</th>
@@ -48,14 +50,14 @@
           </tr>
         </thead>
         <tbody>
-          {% for today_order in takeaway_order %}
-          <tr>
-            <td>today_order.id</td>
-            <td>today_order.name</td>
-            <td>today_order.order</td>
-            <td>today_order.phone</td>
-            <td>today_order.table</td>
-            <td>today_order.time</td>
+          {% for today_order in all_customer_details %}
+          <tr class="active-row">
+            <td>{{today_order.id}}</td>
+            <td>{{today_order.name}}</td>
+            <td>{{today_order.order}}</td>
+            <td>0{{today_order.phone}}</td>
+            <td>{{today_order.table}}</td>
+            <td>{{today_order.time}}</td>
             <td><input type="checkbox" name="status" id="status"></td>
           </tr>
           {% endfor %} 
@@ -73,32 +75,26 @@
     </div>
 
     <div class="reservation-table">
-      <table>
+      <table class="styled-table">
         <thead>
-          <tr>
-            <th scope="col">id</th>
-            <th scope="col">Name</th>
+          <tr>  
             <th scope="col">Order_id</th>
-            <th scope="col">phone</th>
-            <th scope="col">table</th>
-            <th scope="col">time</th>
+            <th scope="col">Cart</th>
+            <th scope="col">quantity</th>
             <th scope="col">status</th>
           </tr>
         </thead>
         <tbody>
-          {% for today_order in reserve_orders %}
-          <tr>
-            <td>today_order.id</td>
-            <td>today_order.name</td>
-            <td>today_order.order</td>
-            <td>today_order.phone</td>
-            <td>today_order.table</td>
-            <td>today_order.time</td>
+          {% for order_item in order_items %}
+          <tr class="active-row">
+            <td>{{order_item.order}}</td>
+            <td><ul><li>{{order_item.products}}</li></ul></td>
+            <td>{{order_item.quantity}}</td>
             <td><input type="checkbox" name="status" id="status"></td>
           </tr>
           {% endfor %}
-        </tbody>
-      </table>
+        </tbody> 
+      </table> 
     </div>
   </section>
 

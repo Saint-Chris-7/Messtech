@@ -24,16 +24,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-enyvknp4gwkpbss4b#&avx%#$07!3z2yrvy$1=r99sd5!-8@fh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['messtech.herokuapp.com','127.0.0.1']
 
 
 # Application definition
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+#AUTH_USER_MODEL='Profile.User'
+        
 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -90,6 +96,7 @@ DATABASES = {
         'PORT':'5432',
     }
 }
+
 
 
 # Password validation
@@ -151,7 +158,7 @@ DEFAULT_FROM_EMAIL = 'default from email'
 ADMINS=[('chris','chrisgathuthi@gmail.com')]
 
 LOGIN_URL='/login/'
-LOGIN_REDIRECT_URL='index/'
+
 
 #mpesa
 MPESA_ENVIRONMENT="sandbox"

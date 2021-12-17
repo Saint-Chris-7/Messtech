@@ -44,7 +44,9 @@
             <a href="{% url 'index' %}"><img src="{% static 'images/Messtech-logos_black.png' %}" class="nav-bar" alt="..."></a>
             <div class="nav-links">
                 <ul>
+                    <li>Hello {{user.first_name}}</li>
                     <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
                    
                 </ul>
             </div>
