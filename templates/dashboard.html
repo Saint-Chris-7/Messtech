@@ -47,6 +47,7 @@
             <th scope="col">table</th>
             <th scope="col">time</th>
             <th scope="col">status</th>
+            <th scope="col">Paid</th>
           </tr>
         </thead>
         <tbody>
@@ -59,6 +60,7 @@
             <td>{{today_order.table}}</td>
             <td>{{today_order.time}}</td>
             <td><input type="checkbox" name="status" id="status"></td>
+            <td><input type="checkbox" name="paid" id="paid"></td>
           </tr>
           {% endfor %} 
         </tbody>

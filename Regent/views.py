@@ -177,7 +177,7 @@ def signup(request):
             elif User.objects.filter(email=Email):
                 messages.info(request,"email already in use")
             else:
-                user=User.objects.create(username=UserName,email=Email,password=password1,first_name=FirstName,last_name=LastName,is_active=True,is_superuser=False,is_staff=False)
+                user=User.objects.create_user(username=UserName,email=Email,password=password1,first_name=FirstName,last_name=LastName,is_active=True,is_superuser=False,is_staff=False)
                 messages.success(request,"account created succesfully proceed to login",fail_silently=True)
                 user.save()
                 
@@ -185,6 +185,7 @@ def signup(request):
                 
         else:
             messages.info(request,"incorrect password")
+            return redirect("signup")
          
     else:
         return render(request,"signup.html")
