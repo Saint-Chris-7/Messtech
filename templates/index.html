@@ -68,7 +68,8 @@ const csrftoken = getToken('csrftoken');
 </head>
 <body>
     <!--navigation-->
-    <nav>
+    <a name="top">
+    <nav >
         <!--social links and phone numbers-->
         <div class="social-calls">
             <!--social-calls-->
@@ -99,20 +100,12 @@ const csrftoken = getToken('csrftoken');
                 <li><a href="{% url 'index' %}">Home</a></li>
                 <li>Hello {{user.first_name}}</li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
-               <!--- <li><a href="#">Whiskey</a></li>
-                <li><a href="#">Wine</a>
-                <!--sales-label-->
-                <!--<span class="sale-label">sale</span>
-                </li>
-                <li><a href="#">Cocktals</a></li>
-                <li><a href="#">Vodka</a></li>
-                <li><a href="#">Contact</a></li>-->
                 <li><a href="#">About</a></li>
             </ul>
             <div class="right-menu">
                 <!--search-->
                 <a href="#" class="search"><i class="fas fa-search"></i></a>
-                <a href="{% url 'logout' %}" class="search">Logout</i></a>
+                <a href="{% url 'logout' %}" class="logout">Logout</i></a>
                  <!--user--
                  
                  <a href="{% url 'signup' %}"><i class="far fa-user"></i></a>-->
@@ -127,7 +120,7 @@ const csrftoken = getToken('csrftoken');
             </div>
         </div>
 
-    </nav>
+    </nav></a>
     <!--search region-->
     <div class="search-bar">
         <!--search inpur-->
@@ -144,44 +137,23 @@ const csrftoken = getToken('csrftoken');
         <li class="item-a">
             <!--box-->
             <div class="full-slider-box f-slider-1">
-                <!--full slider text ---->
-               <!-- <div class="slider-text-container">
-                    <div class="f-slider-text">
-                        <span>limited offer</span>
-                        <strong>30% <br> off with <font>promo code</font> </strong>
-                        <a href="#" class="f-slider-btn">shop now</a>
-                    </div>
-                </div>
-            </div>--->
+      
         </li>
         <li class="item-a">
             <!--box 2-->
             <div class="full-slider-box f-slider-2">
-                <!--full slider text -->
-               <!--- <div class="slider-text-container">
-                    <div class="f-slider-text">
-                        <span>limited offer</span>
-                        <strong>30% <br> off with <font>promo code</font> </strong>
-                        <a href="#" class="f-slider-btn">shop now</a>
-                    </div>
-                </div>-->
+            
             </div>
         </li>
         <li class="item-a">
             <!--box 3-->
             <div class="full-slider-box f-slider-3">
-                <!--full slider text -->
-               <!--- <div class="slider-text-container">
-                    <div class="f-slider-text">
-                        <span>limited offer</span>
-                        <strong>30% <br> off with <font>promo code</font> </strong>
-                        <a href="#" class="f-slider-btn">shop now</a>
-                    </div>
-                </div>-->
             </div>
         </li>
     </ul>
 <!-----------featured category--------->
+
+
 <div class="feature-heading">
     <h2>featured category</h2>
 </div>
@@ -275,8 +247,9 @@ const csrftoken = getToken('csrftoken');
           </div>
           {% endfor %}
       </div>  
+      
     </section>
-
+    <a href="#top">Back to top</a>
 
  
 

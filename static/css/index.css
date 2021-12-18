@@ -447,11 +447,14 @@ footer{
     color: #4e4e4e;
     letter-spacing: 1px;
 }
+form{
+    display: none;
+}
 .subscribe input{
     width:240px;
     height: 43px;
     padding: 0px 20px;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(141, 103, 103, 0.1);
     outline: none;
     box-shadow: 2px 2px 30px rgba(0,0,0,0.05);
 }
