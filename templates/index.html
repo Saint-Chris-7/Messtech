@@ -1,20 +1,404 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
 {% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/apple-touch-icon.png' %}' ">
+    <link rel="icon" type="image/png" sizes="16x16" href=".{% static 'images/favicon-16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.ico' %}">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+    <!--css main page-->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <!--light slider css-->
+    <link rel="stylesheet" href="{% static 'css/lightslider.css' %}">
+    <!--jqwery file-->
+    <script src="{% static 'js/jQuery.js' %}"></script>
+    <!--light slider s-->
+    <script src="{% static 'js/lightslider.js' %}"></script>
+    <!--full slider call-->
+    <script>       
+        $(document).ready(function() {
+            $('#adaptive').lightSlider({
+            adaptiveHeight:true,
+            auto:true,
+            item:1,
+            slideMargin:0,
+            loop:true
+        });
+    });
+       </script>
+       <script>
+            /*--For-Product-SLider----------------*/
+    $(document).ready(function() {
+    $('#autoWidth').lightSlider({
+        autoWidth:true,
+        loop:false,
+        onSliderLoad: function() {
+            $('#autoWidth').removeClass('cS-hidden');
+        } 
+    });  
+});
+   
+       </script>
+    <script>
+    function getToken(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getToken('csrftoken');
+    </script>
+    <title>Messtech</title>
+    <!---using fontawesome for icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% block content %}
-<div class="row">
-    {% for meal in meals %}
-    <div class="col-lg-4">
-        <img class="thumbnail" src="{{meal.image.url}}">
-        <div class="box-element product">
-            <h6><strong>{{meal.name}}</strong></h6>
-            <hr>
-            <button  class="btn btn-outline-secondary add-btn add-cart" data-product="{{meal.id}}" data-action="add">Add to Cart</button>
-            <!--<a class="btn btn-outline-success" href="#">View</a>-->
-            <h4 style="display: inline-block;float: right">Ksh {{meal.price|floatformat:2}}</h4>  
+</head>
+<body>
+    <!--navigation-->
+    <nav>
+        <!--social links and phone numbers-->
+        <div class="social-calls">
+            <!--social-calls-->
+            <div class="social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+
+            </div>
+            <!--phon numbers-->
+            <div class="phone">
+                <span>Call +254 757164343</span>
+            </div>
+        </div>
+        <!---menu bar-->
+        <div class="navigation">
+            <!--logo-->
+            <a href="#">
+                <img src="{% static 'images/android-chrome-192x192.png' %}" alt="logo">
+            </a>
+            <div class="toggle">
+
+            </div>
+            <!--menu-->
+            <ul class="menu">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li>Hello {{user.first_name}}</li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+               <!--- <li><a href="#">Whiskey</a></li>
+                <li><a href="#">Wine</a>
+                <!--sales-label-->
+                <!--<span class="sale-label">sale</span>
+                </li>
+                <li><a href="#">Cocktals</a></li>
+                <li><a href="#">Vodka</a></li>
+                <li><a href="#">Contact</a></li>-->
+                <li><a href="#">About</a></li>
+            </ul>
+            <div class="right-menu">
+                <!--search-->
+                <a href="#" class="search"><i class="fas fa-search"></i></a>
+                <a href="{% url 'logout' %}" class="search">Logout</i></a>
+                 <!--user--
+                 
+                 <a href="{% url 'signup' %}"><i class="far fa-user"></i></a>-->
+                 <!--shopping cart-->
+                 <a href="{% url 'cart' %}"><i class="fas fa-shopping-cart">
+                 <!--number of product in the cart-->
+                 <span class="num-cart-product">{{cartItem}}</span>
+                </i>
+
+                </a>
+                
+            </div>
+        </div>
+
+    </nav>
+    <!--search region-->
+    <div class="search-bar">
+        <!--search inpur-->
+        <div class="search-input">
+            <!--input-->
+            <input type="search" name="search" id="" placeholder="search for brand and category">
+            <!--search canel-->
+            <a href="#" class="search-cancel"><i class="fas fa-times"></i></a>
         </div>
     </div>
-    {% endfor %}
+    <!---full slider-------------->
+    <ul id="adaptive" class="cs-hidden">
+        <!--box 1-->
+        <li class="item-a">
+            <!--box-->
+            <div class="full-slider-box f-slider-1">
+                <!--full slider text ---->
+               <!-- <div class="slider-text-container">
+                    <div class="f-slider-text">
+                        <span>limited offer</span>
+                        <strong>30% <br> off with <font>promo code</font> </strong>
+                        <a href="#" class="f-slider-btn">shop now</a>
+                    </div>
+                </div>
+            </div>--->
+        </li>
+        <li class="item-a">
+            <!--box 2-->
+            <div class="full-slider-box f-slider-2">
+                <!--full slider text -->
+               <!--- <div class="slider-text-container">
+                    <div class="f-slider-text">
+                        <span>limited offer</span>
+                        <strong>30% <br> off with <font>promo code</font> </strong>
+                        <a href="#" class="f-slider-btn">shop now</a>
+                    </div>
+                </div>-->
+            </div>
+        </li>
+        <li class="item-a">
+            <!--box 3-->
+            <div class="full-slider-box f-slider-3">
+                <!--full slider text -->
+               <!--- <div class="slider-text-container">
+                    <div class="f-slider-text">
+                        <span>limited offer</span>
+                        <strong>30% <br> off with <font>promo code</font> </strong>
+                        <a href="#" class="f-slider-btn">shop now</a>
+                    </div>
+                </div>-->
+            </div>
+        </li>
+    </ul>
+<!-----------featured category--------->
+<div class="feature-heading">
+    <h2>featured category</h2>
 </div>
-{% endblock %}
+
+ <!--product-categories-slider---------------------->
+ <ul id="autoWidth" class="container" class="cs-hidden">
+    <!--box-1--------------------->
+    <li class="item">
+        <div class="feature-box">
+            <a href="#">
+                <img src="{% static 'images/breakfast.jpg' %}">
+            </a>
+        </div>
+        <span>Breakfast</span>
+    </li>
+    <!--box-2--------------------->
+    <li class="item">
+        <div class="feature-box">
+            <a href="#">
+                <img src="{% static 'images/lunch.jpg' %}">
+            </a>
+        </div>
+        <span>Lunch</span>
+    </li>
+    <!--box-3--------------------->
+    <li class="item">
+        <div class="feature-box">
+            <a href="#">
+                <img src="{% static 'images/beverages.jpg' %}">
+            </a>
+        </div>
+        <span>Beverage</span>
+    </li>
+    <!--box-4--------------------->
+    <li class="item">
+        <div class="feature-box">
+            <a href="#">
+                <img src="{% static 'images/fruits.jpg' %}">
+            </a>
+        </div>
+        <span>Fruits</span>
+    </li>
+    <!--box-5--------------------->
+    <li class="item">
+        <div class="feature-box">
+            <a href="#">
+                <img src="{% static 'images/snacks.jpg' %}">
+            </a>
+        </div>
+        <span>Snacks</span>
+    </li>
+    <!--box-6--------------------->
+    <li class="item">
+        <div class="feature-box">
+            <a href="#">
+                <img src="{% static 'images/ugali.png' %}">
+            </a>
+        </div>
+        <span>Ugali</span>
+    </li>
+    
+  </ul>
+
+
+
+
+  <!--Feature-items--------this is the django all eatured items------------------------>
+  <section class="feature-item">      
+    <!--heading------wines-->
+    <!--<div class="feature-heading">
+    <strong>Featured Item</strong>
+    <p>We Provide You With Popular liquor brands and Cocktails</p>
+        </div>-->
+      <!--products----------------------->
+      <div class="product-container">
+        <!--product-box-1---------->
+        {% for meal in meals%}
+          <div class="product-box">
+              <!--product-img------------>
+              <div class="product-img">
+                  <!--add-cart---->
+                  <button class="add-cart" data-product="{{meal.id}}" data-action="add" ><i class="fas fa-shopping-cart"></i></button>
+                  <!--img------>
+                <img src="{{meal.image.url}}">
+              </div>
+              <!--product-details-------->
+              <div class="product-details">
+                  <a href="#" class="p-name">{{meal.name}}</a>
+                  <span class="p-price">ksh {{meal.price|floatformat:2}}</span>
+              </div>
+          </div>
+          {% endfor %}
+      </div>  
+    </section>
+
+
  
+
+
+
+
+    
+   <!--services-------------------->
+   <section class="services">
+    <!--services-box---------->
+    <div class="services-box">
+        <i class="fas fa-shipping-fast"></i>
+        <span>Free Shipping</span>
+        <p>Free Shipping for all US order</p>
+    </div>
+    <!--services-box---------->
+    <div class="services-box">
+        <i class="fas fa-headphones-alt"></i>
+        <span>Support 24/7</span>
+        <p>We support 24h a day</p>
+    </div>
+    <!--services-box---------->
+    <div class="services-box">
+        <i class="fas fa-sync"></i>
+        <span>100% Money Back</span>
+        <p>You have 30 days to Return</p>
+    </div>
+    
+</section>
+<!--footer---------------------------->
+<footer>
+    <!--copyright-------------->
+    <span class="copyright">
+        Copyright 2020 - Messtech
+    </span>
+    <!--subcribe---------------->
+    <div class="subscribe">
+        <form>
+        <input type="email" placeholder="Example@gmail.com" required/>
+        <input type="submit" value="Subscribe">
+        </form>
+    </div>
+</footer>
+  
+
+
+
+
+
+    <script>
+
+        /* for the search bar*/
+        $(document).on('click','.search',function(){
+            $('.search-bar').addClass('search-bar-active')
+        });
+        $(document).on('click','.search-cancel',function(){
+            $('.search-bar').removeClass('search-bar-active')
+        });
+        </script>
+       <script>
+
+        /*full script slider*/
+    $(document).ready(function() {
+        $('#adaptive').lightSlider({
+        adaptiveHeight:true,
+        item:1,
+        slideMargin:0,
+        loop:false,
+    });
+});
+    /*--For-Product-SLider----------------*/
+    $(document).ready(function() {
+    $('#autoWidth').lightSlider({
+        autoWidth:true,
+        loop:true,
+        onSliderLoad: function() {
+            $('#autoWidth').removeClass('cS-hidden');
+        } 
+    });  
+});
+    
+
+    </script>
+
+        <script type="text/javascript">
+  $(document).ready(function() {
+    var slider = $("#lightSlider").lightSlider();
+    slider.goToSlide();
+    slider.goToPrevSlide();
+    slider.goToNextSlide();
+    slider.getCurrentSlideCount();
+    slider.refresh();
+    slider.play(); 
+    slider.pause();    
+  });
+
+    </script>
+    <script>
+         /*--For-make-Menu-responsive------------*/
+  $(document).ready(function(){
+		$('.toggle').click(function(){
+			$('.toggle').toggleClass('active')
+			$('.navigation').toggleClass('active')
+		})
+	});
+  
+    </script>
+    <script>
+        /* for menu when scrolling*/
+        $(window).scroll(function(){
+            if($(document).scrollTop() > 50){
+                $('.navigation').addClass('fix-nav');
+            }
+            else{
+                $('.navigation').removeClass('fix-nav');
+
+            }
+        })
+    </script>
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+    <script>
+        var user = '{{request.user}}'
+    </script>
+</body>
+</html>

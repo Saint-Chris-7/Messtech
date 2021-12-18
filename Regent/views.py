@@ -131,7 +131,7 @@ def transaction(request):
     phone_number = str(data['form']['phone']) #data['form']['phone']#customer phone number # Use a Safaricom phone number that you have access to, for you to beable to view the prompt.
     amount = int(data['form']['total'])#total
     account_reference = 'Messtech'
-    transaction_desc = 'your order {order_id }'
+    transaction_desc = 'your order'+ order_id 
     callback_url = request.build_absolute_uri(reverse('mpesa_stk_push_callback'))
     response = cl.stk_push(phone_number, amount, account_reference,transaction_desc, callback_url)
     return HttpResponse(response.text)
