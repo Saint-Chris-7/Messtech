@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sucess</title>
+    <link rel="stylesheet" href="{% static 'sucess.css' %}">
+</head>
+<body>
+    <div class="loginbox">
+        <div class="details">
+            <h3>Thank you very much for choosing messtech</h3>
+            <h2><i class="fa fa-download"></i><a style="text-decoration: none; color: black;" href="{% url 'receipt' %}">Receipt</a></h2>
+            <button> <a href="{% url 'index' %}"><i class="fa fa-home" ></i>Home</a></button>
+        </div>
+
+    </div>
+
+        <script>
+    //write this above first
+
+let a=document.createElement('a');
+    a.target='_self';
+    a.href="{% url 'index' %}";
+</script>
+<script>
+     if (window.confirm('We are working on your order'))
+                {
+            a.click();
+            };
+</script>
+    
+</body>
+</html>

@@ -40,7 +40,7 @@
         <br>
         <div class="box-element hidden" id="payment-info">
             <small>paypal options</small>
-            <h2><i class="fa fa-download"></i><a style="text-decoration: none; color: black;" href="{% url 'receipt' %}">Receipt</a></h2>
+            <!--<h2><i class="fa fa-download"></i><a style="text-decoration: none; color: black;" href="{% url 'receipt' %}">Receipt</a></h2>-->
             <div id="paypal-button-container"></div>
             <!--<button id="make-payment" class="btn btn-blue-grey btn-outline-dark-green">
                 <a href="{% url 'transaction' %}" class="mpesa" style="text-decoration: none; color: green; font-weight: 600;">mpesa</a>
@@ -93,7 +93,6 @@
         // Finalize the transaction
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(orderData) {
-                // Successful capture! For demo purposes:
                 submitFormData()
             });
         }
@@ -101,6 +100,7 @@
 
     }).render('#paypal-button-container');
 </script>
+
 
 
 <script type="text/javascript">
@@ -150,9 +150,13 @@
         .then((response)=>response.json())
         .then((data) => {
             console.log('sucess',data);
+           
             alert('Transaction completed we are working on your order');
-            window.location.href = "{% url 'index' %}"
+            window.location.href = "{% url 'index' %}";
         })
+        
+       
     }
+    
 </script>
 {% endblock %}

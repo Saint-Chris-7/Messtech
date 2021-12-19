@@ -85,6 +85,7 @@ def updateItem(request):
 def processOrder(request):
     global data
     data = json.loads(request.body)
+    print(data)
     if request.user.is_authenticated:
         customer = request.user.profile
         order, created = Order.objects.get_or_create(customer=customer,orderstatus=False)
@@ -107,17 +108,19 @@ def processOrder(request):
         print("The user is not logged in")
     return JsonResponse('payment is complete',safe=False)
 
+
+
+
 def order_receipt(request):
     response = HttpResponse(content_type='text/plain')
     response['Content-Disposition']= 'attachment; filename=Receipt.txt'
-    if request.user.is_authenticated:
-        customer = request.user.profile
-        cust_details = CustomerDetails.objects.all().filter(name=customer)[::-1]
-        lines=[]
-        for details in cust_details:
-            lines.append(f"Name: {details.name}\n Order no: {details.order}\n phone no:{details.phone}\n Order Type:{details.ordertype}\n Table no:{details.table}\n Time:{details.time}\n\n *****End*****\n")
-        response.writelines(lines)
-        return response
+    customer = request.user.profile
+    cust_details = CustomerDetails.objects.filter(name=customer)[::-1]
+    lines=[]
+    for details in cust_details:
+        lines.append(f"Name: {details.name}\n Order no: {details.order}\n phone no:{details.phone}\n Order Type:{details.ordertype}\n Table no:{details.table}\n Time:{details.time}\n\n *****End*****\n")
+    response.writelines(lines)
+    return response
         
 
 
