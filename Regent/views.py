@@ -108,7 +108,8 @@ def processOrder(request):
         print("The user is not logged in")
     return JsonResponse('payment is complete',safe=False)
 
-
+def success(request):
+    return render(request,"success.html")
 
 
 def order_receipt(request):

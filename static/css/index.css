@@ -194,14 +194,18 @@ nav{
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .f-slider-1{
+    display: none;
     background-image: url(../images/banner.jpg);
 }
 .f-slider-2{
+    display: none;
     background-image: url(../images/banner.jpg);
 }
 .f-slider-3{
-    background-image: url(../images/Messtech-logos_black.png);
+    display: none;
+    background-image: url(../images/banner.jpg);
 }
 .slider-text-container{
     width: 90%;

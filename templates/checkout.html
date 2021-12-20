@@ -115,8 +115,8 @@
         document.getElementById('form-button').classList.add("hidden")
         document.getElementById('payment-info').classList.remove("hidden")
     })
-/*
-    document.getElementById('make-payment').addEventListener('click',function(e){
+
+    /*document.getElementById('form-button').addEventListener('click',function(e){
         
         console.log("form submitted")
     })*/
@@ -150,9 +150,8 @@
         .then((response)=>response.json())
         .then((data) => {
             console.log('sucess',data);
-           
             alert('Transaction completed we are working on your order');
-            window.location.href = "{% url 'index' %}";
+            window.location.href = "{% url 'success' %}";
         })
         
        

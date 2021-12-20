@@ -6,30 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sucess</title>
-    <link rel="stylesheet" href="{% static 'sucess.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sucess.css' %}">
 </head>
 <body>
     <div class="loginbox">
         <div class="details">
+            <img src="{% static 'images/android-chrome-192x192.png' %}" class="logo" alt="logo">
             <h3>Thank you very much for choosing messtech</h3>
             <h2><i class="fa fa-download"></i><a style="text-decoration: none; color: black;" href="{% url 'receipt' %}">Receipt</a></h2>
-            <button> <a href="{% url 'index' %}"><i class="fa fa-home" ></i>Home</a></button>
+            <button class="btn btn-success"> <a href="{% url 'index' %}"><i class="fa fa-home" ></i>Home</a></button>
         </div>
 
     </div>
 
         <script>
     //write this above first
-
+/*
 let a=document.createElement('a');
     a.target='_self';
-    a.href="{% url 'index' %}";
+    a.href="{% url 'receipt' %}";*/
 </script>
 <script>
-     if (window.confirm('We are working on your order'))
+    /* if (window.confirm('We are working on your order'))
                 {
             a.click();
-            };
+            };*/
 </script>
     
 </body>
